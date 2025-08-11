@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
+"dev": "nodemon --watch ./ --ext ts --exec \"node --loader ts-node/esm index.ts\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -21,5 +21,13 @@
     "mysql": "^2.18.1",
     "nodemon": "^3.1.10",
     "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/mysql": "^2.15.27",
+    "@types/node": "^24.2.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
