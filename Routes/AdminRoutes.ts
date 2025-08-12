@@ -56,4 +56,16 @@ router.post(
   }
 );
 
+// get categories
+router.get(
+  "/categories",
+  (req: express.Request<{}, {}, TCategory>, res: express.Response) => {
+    const sql = "SELECT * FROM category";
+    connection.query(sql, (err, result) => {
+      if (err) return res.json({ status: false, Error: "Query Error" });
+      return res.json({ status: true, data: result });
+    });
+  }
+);
+
 export { router as adminRouter };
