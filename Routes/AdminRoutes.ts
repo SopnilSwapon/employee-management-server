@@ -12,8 +12,16 @@ type TCategory = {
   category_name: string;
 };
 
+type TEmployee = {
+  name: string;
+  category_name: string;
+  salary: number | string;
+  join_date: string | undefined;
+};
+
 const router = express.Router();
 
+// login
 router.post(
   "/adminlogin",
   (req: express.Request<{}, {}, TUser>, res: express.Response) => {
@@ -45,6 +53,7 @@ router.post(
   }
 );
 
+// add a category
 router.post(
   "/add-category",
   (req: express.Request<{}, {}, TCategory>, res: express.Response) => {
@@ -67,5 +76,24 @@ router.get(
     });
   }
 );
+
+// add employee
+router.post("/add-employee", (req: express.Request<{}, {}, TEmployee>, res) => {
+  const sql = `INSERT INTO employees (name, category_name, salary, join_date) VALUES (?, ?, ?, ?)`;
+
+  connection.query(
+    sql,
+    [
+      req.body.name,
+      req.body.category_name,
+      req.body.salary,
+      req.body.join_date,
+    ],
+    (err, result) => {
+      if (err) return res.json({ status: false, Error: err.message });
+      return res.json({ status: true });
+    }
+  );
+});
 
 export { router as adminRouter };
