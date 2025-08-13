@@ -77,7 +77,7 @@ router.get(
   }
 );
 
-// add employee
+// add a employee
 router.post("/add-employee", (req: express.Request<{}, {}, TEmployee>, res) => {
   const sql = `INSERT INTO employees (name, category_name, salary, join_date) VALUES (?, ?, ?, ?)`;
 
@@ -95,5 +95,36 @@ router.post("/add-employee", (req: express.Request<{}, {}, TEmployee>, res) => {
     }
   );
 });
+
+// get all employees
+router.get(
+  "/employees",
+  (req: express.Request<{}, {}, TEmployee>, res: express.Response) => {
+    const sql = `SELECT * FROM employees`;
+    connection.query(sql, (err, result) => {
+      if (err) return res.json({ status: false, Error: err.message });
+      return res.json({ status: true, data: result });
+    });
+  }
+);
+
+// update a employee
+
+router.put(
+  "/update-employee/:id",
+  (req: express.Request<{ id: string }, {}, TEmployee>, res) => {
+    const id = req.params.id;
+    const { name, category_name, salary, join_date } = req.body;
+    const sql = `UPDATE employees SET name = ?, category_name = ?, salary = ?, join_date = ? WHERE id = ?`;
+    connection.query(
+      sql,
+      [name, category_name, salary, join_date, id],
+      (err, result) => {
+        if (err) return res.json({ status: false, Error: err.message });
+        return res.json({ status: true });
+      }
+    );
+  }
+);
 
 export { router as adminRouter };
